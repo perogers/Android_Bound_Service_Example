@@ -25,8 +25,12 @@ public class HelloService extends Service {
     // Delay before responding
     private static final long RESPONSE_DELAY = 3000L;
 
+    // The client Messenger
     private Messenger mClientMessenger;
 
+    /**
+     * The Handler to receive client messages
+     */
     class RequestHandler extends Handler {
         @Override
         public void handleMessage(Message msg) {
@@ -75,6 +79,7 @@ public class HelloService extends Service {
     }
 
 
+    // The Messenger for client to this Service communication
     final Messenger mMessenger = new Messenger( new RequestHandler());
 
 
