@@ -23,7 +23,7 @@ public class HelloService extends Service {
     static final String MESSAGE_KEY = "message-key";
 
     // Delay before responding
-    private static final long RESPONSE_DELAY = 5000L;
+    private static final long RESPONSE_DELAY = 3000L;
 
     private Messenger mClientMessenger;
 
@@ -46,7 +46,7 @@ public class HelloService extends Service {
                         }
                         Message respMsg = Message.obtain();
                         b = new Bundle();
-                        b.putString(MainActivity.RESPONSE_KEY, "Hey there!");
+                        b.putString(MainActivity.RESPONSE_KEY, "You sent: '" + clientMsg + "'");
                         respMsg.obj = b;
                         respMsg.what = MainActivity.MSG_RESPONSE;
                         try {
