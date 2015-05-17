@@ -76,7 +76,7 @@ public class MainActivity extends Activity {
     /**
      * Handler the handles service response messages
      */
-    class ReponseHandler extends Handler {
+    class ResponseHandler extends Handler {
         @Override
         public void handleMessage(Message msg) {
             if( msg.what == MSG_RESPONSE) {
@@ -95,7 +95,7 @@ public class MainActivity extends Activity {
     }
 
     // The messenger passed to the service to provide a Service to client path
-    final Messenger mRespMessenger = new Messenger(new ReponseHandler());
+    final Messenger mRespMessenger = new Messenger(new ResponseHandler());
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,7 +103,6 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
 
         mSendMessageText = (EditText) findViewById(R.id.msg_text);
-        mSendMessageText.setText("Test");
         mResponseText = (TextView) findViewById(R.id.response_text);
     }
 
