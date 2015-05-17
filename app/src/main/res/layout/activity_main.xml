@@ -10,19 +10,20 @@
 
    <EditText
        android:id="@+id/msg_text"
+       android:text="@string/default_msg_text"
        android:padding="10dp"
        android:layout_width="match_parent"
        android:layout_height="wrap_content"/>
     <TextView
         android:id="@+id/response_text"
-        android:text=" Response        "
+        android:text="@string/response_tmp_text"
         android:padding="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/msg_text"/>
     <Button
         android:id="@+id/send_msg_button"
-        android:text="Send Message"
+        android:text="@string/button_label"
         android:padding="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
