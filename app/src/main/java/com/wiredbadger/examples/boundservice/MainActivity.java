@@ -30,14 +30,14 @@ public class MainActivity extends Activity {
     // The binder key for reponse messages
     static final String RESPONSE_KEY = "reponse-key";
 
-    EditText mSendMessageText;
-    TextView mResponseText;
+    private EditText mSendMessageText;
+    private TextView mResponseText;
 
     // The Messenger to send messages to the service
-    Messenger mMessenger;
+    private Messenger mServiceMessenger;
 
     // Are we bound to the service?
-    boolean mBound;
+    private boolean mBound;
 
 
     /**
@@ -49,25 +49,13 @@ public class MainActivity extends Activity {
             // We have bound to the service
 
             // Save reference to the Service's Messenger
-            mMessenger = new Messenger( service );
-
-            // Send back a message that contains this class's Messenger
-            // This will provide the means for the Service to send responses
-            Message message = Message.obtain();
-            message.what = HelloService.MSG_REPLY_TO;
-            message.replyTo = mRespMessenger;
-            try {
-                mMessenger.send(message);
-            }
-            catch (Exception e) {
-                Log.e(TAG, "Failed sending client's response Messenger! :" + e.getMessage());
-            }
+            mServiceMessenger = new Messenger( service );
             mBound = true;
         }
 
         @Override
         public void onServiceDisconnected(ComponentName componentName) {
-            mMessenger = null;
+            mServiceMessenger = null;
             mBound = false;
         }
     };
@@ -95,7 +83,8 @@ public class MainActivity extends Activity {
     }
 
     // The messenger passed to the service to provide a Service to client path
-    final Messenger mRespMessenger = new Messenger(new ResponseHandler());
+    private final Messenger mRespMessenger = new Messenger(new ResponseHandler());
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -117,12 +106,15 @@ public class MainActivity extends Activity {
                     Context.BIND_AUTO_CREATE);
     }
 
+
+
     @Override
     protected void onStop() {
         super.onStop();
         Log.d(TAG, "Stopping");
         if( mBound ) {
             unbindService(mHelloServiceConnection);
+            mServiceMessenger = null;
             mBound = false;
         }
     }
@@ -142,9 +134,12 @@ public class MainActivity extends Activity {
                 Bundle bundle = new Bundle();
                 bundle.putString(HelloService.MESSAGE_KEY, msgText);
                 message.obj = bundle;
+                // Add Activity's Messenger to message back to service to
+                // provide service -> client comm link
+                message.replyTo = mRespMessenger;
                 // Transmit the message to the Service
                 try {
-                    mMessenger.send(message);
+                    mServiceMessenger.send( message );
                     Toast.makeText(this, "Sending Message", Toast.LENGTH_SHORT).show();
                 }
                 catch (Exception e) {
