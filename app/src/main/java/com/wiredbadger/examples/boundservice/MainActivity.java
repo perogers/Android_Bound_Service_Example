@@ -69,7 +69,7 @@ public class MainActivity extends Activity {
         public void handleMessage(Message msg) {
             if( msg.what == MSG_RESPONSE) {
                 Log.d(TAG, "Got a reponse!");
-                Bundle b = (Bundle) msg.obj;
+                Bundle b = msg.getData();
                 String responseMsg = b.getString(RESPONSE_KEY);
                 Log.d(TAG, "RX'ed message '" +responseMsg + "'");
 
@@ -133,7 +133,7 @@ public class MainActivity extends Activity {
                 // Must put String into Bundle - only android.os.Parcelable objects can be transmitted
                 Bundle bundle = new Bundle();
                 bundle.putString(HelloService.MESSAGE_KEY, msgText);
-                message.obj = bundle;
+                message.setData( bundle );
                 // Add Activity's Messenger to message back to service to
                 // provide service -> client comm link
                 message.replyTo = mRespMessenger;

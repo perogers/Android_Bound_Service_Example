@@ -92,7 +92,7 @@ public class HelloService extends Service {
      * @return text string
      */
     private String obtainMessageText(Message message) {
-        Bundle b = (Bundle) message.obj;
+        Bundle b = message.getData();
        return b.getString(MESSAGE_KEY);
     }
 
@@ -104,7 +104,7 @@ public class HelloService extends Service {
         Message respMsg = Message.obtain();
         Bundle b = new Bundle();
         b.putString(MainActivity.RESPONSE_KEY, "You sent: '" + clientMsg + "'");
-        respMsg.obj = b;
+        respMsg.setData( b );
         respMsg.what = MainActivity.MSG_RESPONSE;
         return respMsg;
     }
